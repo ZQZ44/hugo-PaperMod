@@ -19,6 +19,9 @@ window.onload = function () {
                         distance: 100,
                         threshold: 0.4,
                         ignoreLocation: true,
+                        includeMatches: true,
+                        includeScore: true,
+                        minMatchCharLength: 1,
                         keys: [
                             'title',
                             'permalink',
@@ -72,6 +75,33 @@ function reset() {
     sInput.focus(); // shift focus to input box
 }
 
+// Helper function to get context around matched text
+function getContextSnippet(text, match, contextLength = 100) {
+    // 确保有匹配结果和索引
+    if (!match.indices || match.indices.length === 0) {
+        return text;
+    }
+
+    const matchStart = match.indices[0][0];
+    const matchEnd = match.indices[0][1] + 1; // 添加1来包含完整的匹配字符
+    
+    // 计算上下文的起止位置
+    const start = Math.max(matchStart - contextLength, 0);
+    const end = Math.min(matchEnd + contextLength, text.length);
+    
+    let snippet = text.substring(start, end);
+    
+    // 计算相对于截取片段的匹配位置
+    const highlightStart = matchStart - start;
+    const highlightEnd = matchEnd - start;
+    
+    // 构建带有高亮的片段
+    const beforeMatch = snippet.substring(0, highlightStart);
+    const matchText = snippet.substring(highlightStart, highlightEnd);
+    const afterMatch = snippet.substring(highlightEnd);
+    
+    return beforeMatch + '<mark>' + matchText + '</mark>' + afterMatch;
+}
 // execute search as each character is typed
 sInput.onkeyup = function (e) {
     // run a search query (for "term") every time a letter is typed
@@ -88,7 +118,23 @@ sInput.onkeyup = function (e) {
             let resultSet = ''; // our results bucket
 
             for (let item in results) {
-                resultSet += `<li class="post-entry"><header class="entry-header">${results[item].item.title}&nbsp;»</header>` +
+                const result = results[item];
+                let contextHtml = '';
+
+                // Find the best match to show context
+                if (result.matches && result.matches.length > 0) {
+                    // Prioritize content matches over summary
+                    const contentMatch = result.matches.find(m => m.key === 'content');
+                    const summaryMatch = result.matches.find(m => m.key === 'summary');
+                    const bestMatch = contentMatch || summaryMatch;
+
+                    if (bestMatch) {
+                        contextHtml = `<div class="search-context">
+                            ${getContextSnippet(bestMatch.value, bestMatch)}
+                        </div>`;
+                    }
+                }
+                resultSet += `<li class="post-entry"><header class="entry-header"><h2 class="entry-hint-parent">${results[item].item.title}&nbsp;»</h2></header>${contextHtml}` +
                     `<a href="${results[item].item.permalink}" aria-label="${results[item].item.title}"></a></li>`
             }
 

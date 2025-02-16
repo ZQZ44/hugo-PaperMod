@@ -1,0 +1,12 @@
+.search-context {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0.5em 0;
+    line-height: 1.4;
+}
+
+.search-context mark {
+    font-weight:bold;
+    background-color: var(--theme);
+    color: var(--hover-highlight);
+}
