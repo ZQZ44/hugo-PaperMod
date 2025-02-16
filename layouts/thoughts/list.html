@@ -1,0 +1,20 @@
+{{ define "main" }}
+<header class="page-header">
+  <h1>
+   {{ .Title }}
+  </h1>
+</header>
+<div class="thoughts-container">
+  {{ range .Pages.ByDate.Reverse }}
+    <div class="thought-card">
+      <a href="{{ .Permalink }}" class="thought-link">
+       <div class="thought-content">
+           {{ .Content }}
+      </div>
+      <div class="thought-date">
+        {{ .Date.Format "2006-01-02" }}
+      </div>
+    </div>
+  {{ end }}
+</div>
+{{ end }}
