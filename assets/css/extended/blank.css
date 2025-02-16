@@ -3,3 +3,73 @@ This is just a placeholder blank stylesheet so as to support adding custom style
 
 Read https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#bundling-custom-css-with-themes-assets for more info
 */
+:root {
+    --theme: rgb(248, 246, 244);
+    --entry: rgb(255, 253, 252);
+    --content: rgb(51, 51, 51);
+    --code-block-bg: rgb(255, 253, 252);
+    --code-bg: rgb(248, 246, 244);
+    --hover-highlight: rgb(177, 75, 67);
+}
+
+#menu a:hover {
+  transition: 0.15s;
+  color: var(--hover-highlight);
+}
+
+.copy-code {
+    color: rgba(248, 246, 244, 0.8);
+}
+
+.first-entry {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 200px;
+    margin: var(--gap) 0 calc(var(--gap)) 0;
+}
+
+.home-info-entry{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: space-between;
+    margin: var(--gap) 0 calc(var(--gap)) 0;
+    border-bottom: 1.5px solid #e5e5e5;
+}
+
+.home-info-image{
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.post-entry {
+    position: relative;
+    margin-bottom: var(--gap);
+    padding: var(--gap);
+    background: var(--theme);
+    border-radius: unset;
+    transition: transform 0.1s;
+    border: unset;
+    border-bottom: 1.5px solid #e5e5e5;
+}
+
+.entry-hint-parent {
+    display: flex;
+    justify-content: space-between;
+    color: var(--primary);
+}
+
+.post-entry:hover h2{
+  transition: 0.15s;
+  color: var(--hover-highlight);
+}
+
+.active {
+    font-size: 110%;
+    font-weight: 600;
+    color: var(--hover-highlight)
+}
